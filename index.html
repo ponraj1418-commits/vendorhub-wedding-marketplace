@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorHub | Wedding Vendor Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="navbar">
+  <a class="brand" href="#home"><span>✦</span> VendorHub</a>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a><a href="#categories">Categories</a><a href="#vendors">Vendors</a>
+    <a href="#dashboard">Dashboard</a><button class="outline-btn" onclick="openAuth()">Sign In</button>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">YOUR WEDDING, YOUR WAY</span>
+    <h1>Find the perfect vendors for your <em>big day.</em></h1>
+    <p>Discover trusted venues, photographers, caterers, florists and wedding professionals in one beautiful marketplace.</p>
+    <div class="search-box">
+      <input id="heroSearch" placeholder="Search vendors, services or locations...">
+      <select id="heroCategory"><option value="">All categories</option><option>Venues</option><option>Photographers</option><option>Caterers</option><option>Florists</option><option>Makeup Artists</option><option>DJs</option><option>Planners</option></select>
+      <button class="primary-btn" onclick="searchFromHero()">Search</button>
+    </div>
+  </div>
+</section>
+
+<section id="categories" class="section">
+  <div class="section-head"><div><span class="eyebrow">EXPLORE</span><h2>Wedding categories</h2></div><a href="#vendors">View all →</a></div>
+  <div class="category-grid">
+    <button onclick="filterCategory('Venues')"><span>🏛️</span><b>Venues</b><small>Halls & resorts</small></button>
+    <button onclick="filterCategory('Photographers')"><span>📸</span><b>Photographers</b><small>Capture moments</small></button>
+    <button onclick="filterCategory('Caterers')"><span>🍽️</span><b>Caterers</b><small>Food & dining</small></button>
+    <button onclick="filterCategory('Florists')"><span>🌸</span><b>Florists</b><small>Flowers & decor</small></button>
+    <button onclick="filterCategory('Makeup Artists')"><span>💄</span><b>Makeup</b><small>Beauty & styling</small></button>
+    <button onclick="filterCategory('DJs')"><span>🎧</span><b>DJs</b><small>Music & entertainment</small></button>
+    <button onclick="filterCategory('Planners')"><span>📋</span><b>Planners</b><small>Wedding planning</small></button>
+  </div>
+</section>
+
+<section id="vendors" class="section vendors-section">
+  <div class="section-head"><div><span class="eyebrow">DISCOVER</span><h2>Featured vendors</h2></div><span id="resultCount" class="muted"></span></div>
+  <div class="filters">
+    <input id="searchInput" placeholder="🔎 Search vendors or location" oninput="renderVendors()">
+    <select id="categoryFilter" onchange="renderVendors()"><option value="">All categories</option><option>Venues</option><option>Photographers</option><option>Caterers</option><option>Florists</option><option>Makeup Artists</option><option>DJs</option><option>Planners</option></select>
+    <select id="priceFilter" onchange="renderVendors()"><option value="">Any price</option><option value="budget">Under ₹50K</option><option value="mid">₹50K–₹1.5L</option><option value="premium">Above ₹1.5L</option></select>
+    <select id="ratingFilter" onchange="renderVendors()"><option value="0">Any rating</option><option value="4.5">4.5+</option><option value="4.8">4.8+</option></select>
+  </div>
+  <div id="vendorGrid" class="vendor-grid"></div>
+</section>
+
+<section class="why section">
+  <div><span class="eyebrow">WHY VENDORHUB</span><h2>Everything you need to plan with confidence.</h2></div>
+  <div class="why-grid"><article><span>✓</span><h3>Trusted vendors</h3><p>Explore detailed profiles, services, prices and customer reviews.</p></article><article><span>♡</span><h3>Save your favorites</h3><p>Keep your shortlisted vendors together while you compare options.</p></article><article><span>⚡</span><h3>Simple booking</h3><p>Choose a service, date and package with a quick booking flow.</p></article></div>
+</section>
+
+<section id="dashboard" class="section dashboard">
+  <div class="dashboard-card">
+    <div><span class="eyebrow">YOUR SPACE</span><h2>Wedding planning dashboard</h2><p>Track bookings and favorites in one place.</p></div>
+    <div class="stats"><div><b id="bookingCount">0</b><small>Bookings</small></div><div><b id="favoriteCount">0</b><small>Favorites</small></div></div>
+    <button class="primary-btn" onclick="showDashboard()">Open dashboard</button>
+  </div>
+</section>
+</main>
+
+<footer><div class="brand"><span>✦</span> VendorHub</div><p>Making wedding planning easier, one vendor at a time.</p><small>© 2026 VendorHub · Frontend internship project</small></footer>
+
+<div id="vendorModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('vendorModal')">×</button><div id="vendorDetail"></div></div></div>
+<div id="bookingModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('bookingModal')">×</button>
+  <span class="eyebrow">BOOK A VENDOR</span><h2 id="bookingTitle">Book vendor</h2>
+  <form onsubmit="confirmBooking(event)"><label>Service<select id="bookingService"></select></label><label>Date<input id="bookingDate" type="date" required></label><label>Package<select id="bookingPackage"><option>Essential Package</option><option>Premium Package</option><option>Custom Package</option></select></label><label>Your name<input id="customerName" required placeholder="Enter your name"></label><button class="primary-btn full">Confirm booking</button></form>
+</div></div>
+
+<div id="authModal" class="modal"><div class="modal-card small"><button class="close" onclick="closeModal('authModal')">×</button><span class="eyebrow">WELCOME</span><h2>Sign in to VendorHub</h2><form onsubmit="fakeLogin(event)"><label>Email<input type="email" required placeholder="you@example.com"></label><label>Password<input type="password" required placeholder="••••••••"></label><button class="primary-btn full">Sign in</button></form><p class="muted center">Demo login — no real account is created.</p></div></div>
+
+<div id="dashboardModal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal('dashboardModal')">×</button><span class="eyebrow">MY DASHBOARD</span><h2>My bookings & favorites</h2><div id="dashboardContent"></div></div></div>
+<div id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
